@@ -187,7 +187,13 @@ public class ETLMarkupDocumentGenerator {
 
 		List<Row> rows = new ArrayList<>();
 		for (Field field : sourceTable.getFields()) {
-			String mostFrequentValue = field.getValueCounts().getMostFrequentValue();
+			String mostFrequentValue = "";
+			try {
+				mostFrequentValue = field.getValueCounts().getMostFrequentValue();
+			}
+			catch (Exception e) {
+				System.out.println(sourceTable.getName() + "." + field.getName() + ": no value range available");
+			}
 
 			Row row = new Row();
 			row.add("Field", field.getName());

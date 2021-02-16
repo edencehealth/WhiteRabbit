@@ -93,7 +93,13 @@ public class ETLWordDocumentGenerator {
 				XWPFTableRow row = table.getRow(rowNr++);
 				row.getCell(0).setText(sourceField.getName());
 				row.getCell(1).setText(sourceField.getType());
-				row.getCell(2).setText(sourceField.getValueCounts().getMostFrequentValue());
+				try {
+					row.getCell(2).setText(sourceField.getValueCounts().getMostFrequentValue());
+				}
+				catch (Exception e) {
+					row.getCell(2).setText("");
+					System.out.println(sourceTable.getName() + "." + sourceField.getName() + ": no value range available");
+				}
 				createCellParagraph(row.getCell(3), sourceField.getComment().trim());
 			}
 			
