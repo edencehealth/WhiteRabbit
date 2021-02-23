@@ -265,7 +265,7 @@ public class WhiteRabbitMain implements ActionListener {
 		sourceDataScan.setMaxValues(maxValues);
 		sourceDataScan.setCalculateNumericStats(calculateNumericStats);
 		sourceDataScan.setNumStatsSamplerSize(numericStatsSamplerSize);
-		sourceDataScan.process(dbSettings, iniFile.get("WORKING_FOLDER") + "/ScanReport.xlsx");
+		sourceDataScan.process(dbSettings, iniFile.get("WORKING_FOLDER") + "/" + iniFile.get("REPORT_NAME"));
 	}
 
 	private JComponent createTabsPanel() {
