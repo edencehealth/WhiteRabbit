@@ -436,7 +436,7 @@ public class SourceDataScan {
 				query = "SELECT * FROM " + table;
 		} else {
 			if (dbType == DbType.MSSQL || dbType == DbType.AZURE)
-				query = "SELECT * FROM [" + table.replaceAll("\\.", "].[") + "] TABLESAMPLE (" + sampleSize + " ROWS)";
+				query = "SELECT TOP " + sampleSize + " * FROM [" + table.replaceAll("\\.", "].[") + "] ORDER BY NEWID()";
 			else if (dbType == DbType.MYSQL)
 				query = "SELECT * FROM " + table + " ORDER BY RAND() LIMIT " + sampleSize;
 			else if (dbType == DbType.PDW)
