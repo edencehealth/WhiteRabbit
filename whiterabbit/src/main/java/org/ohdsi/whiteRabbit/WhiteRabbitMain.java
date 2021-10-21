@@ -822,7 +822,7 @@ public class WhiteRabbitMain implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
-			if (sourceDelimiterField.getText().toLowerCase().equals("tab"))
+			if (sourceDelimiterField.getText().equalsIgnoreCase("tab"))
 				dbSettings.delimiter = '\t';
 			else
 				dbSettings.delimiter = sourceDelimiterField.getText().charAt(0);
@@ -853,7 +853,7 @@ public class WhiteRabbitMain implements ActionListener {
 						dbSettings.domain = parts[0];
 					}
 				}
-			} if (sourceType.getSelectedItem().toString().equals("PDW")) {
+			} else if (sourceType.getSelectedItem().toString().equals("PDW")) {
 				dbSettings.dbType = DbType.PDW;
 				if (sourceUserField.getText().length() != 0) { // Not using windows authentication
 					String[] parts = sourceUserField.getText().split("/");
@@ -925,12 +925,9 @@ public class WhiteRabbitMain implements ActionListener {
 		if (targetType.getSelectedItem().equals("Delimited text files")) {
 			dbSettings.sourceType = DbSettings.SourceType.CSV_FILES;
 
-			switch((String) targetCSVFormat.getSelectedItem()) {
+			switch(targetCSVFormat.getSelectedItem().toString()) {
 				case "Default (comma, CRLF)":
 					dbSettings.csvFormat = CSVFormat.DEFAULT;
-					break;
-				case "RFC4180":
-					dbSettings.csvFormat = CSVFormat.RFC4180;
 					break;
 				case "Excel CSV":
 					dbSettings.csvFormat = CSVFormat.EXCEL;
@@ -944,7 +941,6 @@ public class WhiteRabbitMain implements ActionListener {
 				default:
 					dbSettings.csvFormat = CSVFormat.RFC4180;
 			}
-
 		} else {
 			dbSettings.sourceType = DbSettings.SourceType.DATABASE;
 			dbSettings.user = targetUserField.getText();
@@ -1093,12 +1089,12 @@ public class WhiteRabbitMain implements ActionListener {
 		}
 	}
 
-	private class DBTableSelectionDialog extends JDialog implements ActionListener {
+	private static class DBTableSelectionDialog extends JDialog implements ActionListener {
 		private static final long	serialVersionUID	= 4527207331482143091L;
-		private JButton				yesButton			= null;
-		private JButton				noButton			= null;
+		private final JButton				yesButton;
+		private final JButton				noButton;
 		private boolean				answer				= false;
-		private JList<String>		list;
+		private final JList<String>		list;
 
 		public boolean getAnswer() {
 			return answer;
@@ -1116,7 +1112,7 @@ public class WhiteRabbitMain implements ActionListener {
 			JLabel message = new JLabel("Select tables");
 			panel.add(message, BorderLayout.NORTH);
 
-			list = new JList<String>(tableNames.split("\t"));
+			list = new JList<>(tableNames.split("\t"));
 			JScrollPane scrollPane = new JScrollPane(list);
 			panel.add(scrollPane, BorderLayout.CENTER);
 
@@ -1151,11 +1147,8 @@ public class WhiteRabbitMain implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		switch (event.getActionCommand()) {
-			case ACTION_CMD_HELP:
-				doOpenDocumentation();
-				break;
-
+		if (ACTION_CMD_HELP.equals(event.getActionCommand())) {
+			doOpenDocumentation();
 		}
 	}
 
